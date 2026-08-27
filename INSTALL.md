@@ -1,51 +1,45 @@
-# Thorium AVX Installation & Configuration Guide
+# Thorium AVX1 + Legacy GPU Installation & Configuration Guide
 
-This guide covers installing and configuring **Thorium Browser AVX Build (v151.0.7922.72)** with RIME input method integration and GPU hardware acceleration on Debian, Ubuntu, antiX, and Arch Linux.
+This guide covers installing and configuring **Thorium Browser AVX1 Edition (v151.0.7922.72)** with persistent RIME input method integration and hybrid GPU acceleration on Debian, Ubuntu, antiX, and Arch Linux.
 
 ---
 
 ## 1. Installation
 
 ### Debian / Ubuntu / antiX Linux (.deb)
-
-Download `thorium-browser_151.0.7922.72_AVX_RIME.deb` from the `packages/` directory or GitHub Releases:
-
 ```bash
-# 1. Install required dependencies
 sudo apt update
 sudo apt install -y libnss3 libatk1.0-0 libcups2 libxcomposite1 libxdamage1 libxrandr2 libgbm1 libasound2
-
-# 2. Install the package
 sudo dpkg -i packages/thorium-browser_151.0.7922.72_AVX_RIME.deb || sudo apt-get -f install -y
 ```
 
-### Arch Linux (.pkg.tar.zst / PKGBUILD)
-
+### Arch Linux (.pkg.tar.zst)
 ```bash
-# Option A: Direct install from prebuilt package
 sudo pacman -U packages/thorium-browser-avx-rime-bin-151.0.7922.72-1-x86_64.pkg.tar.zst
-
-# Option B: Build with PKGBUILD
-cd packaging/arch
-makepkg -si
 ```
 
 ---
 
-## 2. RIME Input Method (Fcitx5 / IBus) Setup
+## 2. Persistent RIME (Fcitx5 / IBus) Setup
 
-Thorium AVX includes native IME support for Fcitx5, Fcitx4, and IBus. Ensure your desktop environment passes the required environment variables:
+To ensure RIME Chinese input never loses focus or drops out during long sessions or after tab discarding:
 
-```bash
-export GTK_IM_MODULE=fcitx
-export QT_IM_MODULE=fcitx
-export XMODIFIERS=@im=fcitx
-```
-
-Start Thorium with native IME candidate window positioning:
-```bash
-thorium-browser --enable-features=UseOzonePlatform --ozone-platform=x11
-```
+1. Add environment variables to `~/.bashrc` or `~/.xprofile`:
+   ```bash
+   export GTK_IM_MODULE=fcitx
+   export QT_IM_MODULE=fcitx
+   export XMODIFIERS=@im=fcitx
+   export SDL_IM_MODULE=fcitx
+   export GLFW_IM_MODULE=fcitx
+   ```
+2. Launch Thorium with persistent Gtk3 IM context and occlusion keepalive flags:
+   ```bash
+   thorium-browser \
+     --gtk-version=3 \
+     --ozone-platform=x11 \
+     --enable-features=UseOzonePlatform \
+     --disable-features=CalculateNativeWinOcclusion
+   ```
 
 ---
 
@@ -53,7 +47,7 @@ thorium-browser --enable-features=UseOzonePlatform --ozone-platform=x11
 
 For laptops with hybrid Intel + NVIDIA GPUs running Linux 6.x kernels and Xorg 21.1+:
 
-1. Run the included setup script:
+1. Execute the automated setup script:
    ```bash
    bash scripts/setup_gf108_acceleration.sh
    ```
@@ -64,7 +58,7 @@ For laptops with hybrid Intel + NVIDIA GPUs running Linux 6.x kernels and Xorg 2
 
 ---
 
-## 4. Verification
+## 4. Hardware Acceleration Verification
 
 Open `chrome://gpu` in Thorium and verify:
 - **Canvas**: Hardware accelerated
