@@ -1,0 +1,31 @@
+diff --git a/build/config/compiler_cpu_abi.gn b/build/config/compiler_cpu_abi.gn
+index 8a3f910..29de104 100644
+--- a/build/config/compiler_cpu_abi.gn
++++ b/build/config/compiler_cpu_abi.gn
+@@ -35,6 +35,10 @@ declare_args() {
+   # Optimized for Intel Sandy Bridge / Ivy Bridge processors
+   x86_arch = "sandybridge"
+ }
++
++if (current_toolchain == "//build/toolchain/linux:clang_x64_target") {
++  cflags += [ "-march=sandybridge", "-mtune=generic", "-O3" ]
++}
+diff --git a/build/toolchain/linux/BUILD.gn b/build/toolchain/linux/BUILD.gn
+index f219bb4..e70192a 100644
+--- a/build/toolchain/linux/BUILD.gn
++++ b/build/toolchain/linux/BUILD.gn
+@@ -18,6 +18,14 @@ clang_toolchain("clang_x64") {
+   toolchain_args = {
+     current_cpu = "x64"
+     current_os = "linux"
++    is_high_end_target = false
++  }
++}
++
++clang_toolchain("clang_x64_target") {
++  toolchain_args = {
++    current_cpu = "x64"
++    current_os = "linux"
++    is_high_end_target = true
+   }
+ }

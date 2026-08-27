@@ -1,0 +1,23 @@
+# Maintainer: namobuddha <namobuddha@gmail.com>
+pkgname=thorium-browser-avx-rime-bin
+pkgver=151.0.7922.72
+pkgrel=1
+pkgdesc="Thorium Browser optimized for AVX (Sandy Bridge/Ivy Bridge) with RIME IME & GPU VA-API hardware offloading"
+arch=('x86_64')
+url="https://github.com/Alex313031/Thorium"
+license=('BSD-3-Clause')
+depends=('gtk3' 'nss' 'alsa-lib' 'libxss' 'ttf-font' 'libvpx' 'libevent')
+optdepends=(
+    'bumblebee: Hybrid graphics support for NVIDIA GF108 / Optimus'
+    'primus: High-performance OpenGL bridge for NVIDIA GPUs'
+    'intel-media-driver: Hardware VA-API video decoding for Intel GPUs'
+    'fcitx5-rime: High performance RIME input method integration'
+)
+provides=('thorium-browser')
+conflicts=('thorium-browser')
+source=("thorium-browser_${pkgver}_AVX_RIME.deb")
+sha256sums=('51c28b00bd2e79b6d4f4a2a857072e3c68f96af6fb18f0bb5934b1265c7cfffd')
+
+package() {
+    tar -xf data.tar.xz -C "${pkgdir}/"
+}
