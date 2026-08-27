@@ -1,5 +1,3 @@
-packages/*.deb
-packages/*.pkg.tar.zst
 packages/*.tar.xz
 packages/*.tar.gz
 packages/*.zip
