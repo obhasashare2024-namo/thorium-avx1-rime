@@ -1,0 +1,13 @@
+diff --git a/ui/webui/BUILD.gn b/ui/webui/BUILD.gn
+index e20803e..3a8c5eb 100644
+--- a/ui/webui/BUILD.gn
++++ b/ui/webui/BUILD.gn
+@@ -41,7 +41,7 @@ mojom("webui_untrusted_example_mojom") {
+ 
+ mojom("color_change_listener_mojom") {
+   sources = [ "resources/cr_components/color_change_listener/color_change_listener.mojom" ]
+-  if (!is_android && !is_ios) {
++  if ((!is_android && !is_ios) || is_desktop_android || enable_desktop_android_extensions) {
+     public_deps = [ "//mojo/public/mojom/base" ]
+   }
+ }

@@ -1,0 +1,17 @@
+/*
+ * Xorg 21.1 / Linux 6.6 DRM Master Interception Shim (fix_drm.c)
+ * Prevents secondary accelerating Xorg servers from claiming DRM master
+ * on primary display GPUs (e.g. Intel HD 4000), avoiding drmSetMaster conflicts.
+ */
+
+#define _GNU_SOURCE
+#include <dlfcn.h>
+#include <errno.h>
+
+int drmSetMaster(int fd) {
+    return 0; // Return success without locking primary GPU DRM
+}
+
+int drmDropMaster(int fd) {
+    return 0;
+}

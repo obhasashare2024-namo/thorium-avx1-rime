@@ -1,0 +1,42 @@
+diff --git a/nvidia/nv.c b/nvidia/nv.c
+index 92a7bc1..e41a990 100644
+--- a/nvidia/nv.c
++++ b/nvidia/nv.c
+@@ -1510,17 +1510,13 @@ int nv_start_device(
+     if (!NV_IS_GVI_DEVICE(nv))
+     {
+         if (!(nv->flags & NV_FLAG_PERSISTENT_SW_STATE))
+         {
+-            rm_read_registry_dword(sp, nv, "NVreg", NV_REG_ENABLE_MSI,
+-                                   &msi_config);
+-            if ((msi_config == 1) &&
+-                    (nv_find_pci_capability(nvl->dev, PCI_CAP_ID_MSI)))
++            rc = pci_alloc_irq_vectors(nvl->dev, 1, 1, PCI_IRQ_ALL_TYPES);
++            if (rc > 0)
+             {
+-                if (nv_find_pci_capability(nvl->dev, PCI_CAP_ID_PM))
+-                {
+-                    rc = pci_enable_msi(nvl->dev);
+-                    if (rc == 0)
+-                    {
+-                        nv->interrupt_line = nvl->dev->irq;
+-                        nv->flags |= NV_FLAG_USES_MSI;
+-                    }
++                nv->interrupt_line = pci_irq_vector(nvl->dev, 0);
++                if (nvl->dev->msi_enabled)
++                    nv->flags |= NV_FLAG_USES_MSI;
++                else
++                    nv->flags &= ~NV_FLAG_USES_MSI;
++                rc = 0;
+             }
+diff --git a/common/inc/nv-linux.h b/common/inc/nv-linux.h
+index b73e1c2..88df119 100644
+--- a/common/inc/nv-linux.h
++++ b/common/inc/nv-linux.h
+@@ -1780,7 +1780,7 @@ static inline void nv_pci_save_state(struct pci_dev *dev)
+ #if !defined(NV_LINUX_PCIE_MSI_SUPPORTED) || !defined(CONFIG_PCI_MSI)
+ #define NV_PCI_DISABLE_MSI(dev)
+ #else
+-#define NV_PCI_DISABLE_MSI(dev)         pci_disable_msi(dev)
++#define NV_PCI_DISABLE_MSI(dev)         pci_free_irq_vectors(dev)
+ #endif
