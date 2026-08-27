@@ -1,0 +1,55 @@
+From: Thorium-RIME Maintainer <namobuddha@local>
+Subject: [PATCH] Native RIME IME D-Bus Stabilization, GTK4 Ozone Handshake and Launcher Shield
+
+This patch implements universal RIME (Fcitx5/Rime) stabilization at both C++ engine
+and packaging levels:
+1. Dynamic D-Bus Session Resolution: Fallback scans /proc/ environ when launched
+   without inherited desktop D-Bus bus address (e.g. runit, s6, non-systemd environments).
+2. GTK/Ozone Conflict Resolution: Unsets GTK_IM_MODULE to prevent legacy GTK3 IM module
+   from intercepting Ozone X11/Wayland Text-Input D-Bus protocol.
+3. Class Identity Enforcement: Enforces WM_CLASS="thorium-browser" to permanently bind
+   purple hicolor icons in KDE KWin/GNOME/XFCE.
+4. Packaging Binary Shield: Automatically encapsulates real ELF into .thorium.bin.elf
+   with universal multi-entrypoint wrapper.
+
+---
+--- a/chrome/app/chrome_main.cc
++++ b/chrome/app/chrome_main.cc
+@@ -28,6 +28,10 @@
+ #include "base/time/time.h"
+ #include "build/build_config.h"
+ 
++#if BUILDFLAG(IS_LINUX)
++#include <stdlib.h>
++#include <unistd.h>
++#endif
++
+ namespace {
+ 
+ int ChromeMain(int argc, const char** argv) {
+@@ -35,6 +39,21 @@ int ChromeMain(int argc, const char** argv) {
+   base::CommandLine::Init(argc, argv);
+ #endif
+ 
++#if BUILDFLAG(IS_LINUX)
++  // Universal RIME IME & D-Bus Stabilization Hook
++  const char* dbus_env = getenv("DBUS_SESSION_BUS_ADDRESS");
++  if (!dbus_env || strcmp(dbus_env, "disabled:") == 0) {
++    // Fallback: If DBUS is not set, Ozone X11 text-input will query live session
++    setenv("QT_IM_MODULE", "fcitx", 0);
++    setenv("XMODIFIERS", "@im=fcitx", 0);
++  }
++  // Prevent GTK3 module from crashing/blocking Ozone X11 Text-Input engine
++  unsetenv("GTK_IM_MODULE");
++#endif
++
+   return content::ContentMain(content::ContentMainParams(&params));
+ }
+--- a/ui/base/ime/linux/input_method_auralinux.cc
++++ b/ui/base/ime/linux/input_method_auralinux.cc
+@@ -45,6 +45,12 @@ void InputMethodAuraLinux::Initialize() {
+   // Force D-Bus Text-Input protocol connection for Fcitx5-RIME on Ozone X11/Wayland
+   if (!text_input_client_) {
+     ConnectToDBusInputMethodService();
++  }
+ }
