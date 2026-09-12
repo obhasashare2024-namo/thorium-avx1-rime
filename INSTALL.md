@@ -1,6 +1,6 @@
 # Thorium AVX1 + Legacy GPU Installation & Configuration Guide
 
-This guide covers installing and configuring **Thorium Browser AVX1 Edition (v151.0.7922.72)** with persistent RIME input method integration and hybrid GPU acceleration on Debian, Ubuntu, antiX, and Arch Linux.
+This guide covers installing and configuring **Thorium Browser AVX1 Edition (v154.0.8023.0)** with persistent RIME input method integration and hybrid GPU acceleration on Debian, Ubuntu, antiX, and Arch Linux.
 
 ---
 
@@ -10,12 +10,12 @@ This guide covers installing and configuring **Thorium Browser AVX1 Edition (v15
 ```bash
 sudo apt update
 sudo apt install -y libnss3 libatk1.0-0 libcups2 libxcomposite1 libxdamage1 libxrandr2 libgbm1 libasound2
-sudo dpkg -i packages/thorium-browser_151.0.7922.72_AVX_RIME.deb || sudo apt-get -f install -y
+sudo dpkg -i packages/thorium-browser_154.0.8023.0_AVX.deb || sudo apt-get -f install -y
 ```
 
 ### Arch Linux (.pkg.tar.zst)
 ```bash
-sudo pacman -U packages/thorium-browser-avx-rime-bin-151.0.7922.72-1-x86_64.pkg.tar.zst
+sudo pacman -U packages/thorium-browser-avx-rime-bin-154.0.8023.0-1-x86_64.pkg.tar.zst
 ```
 
 ---

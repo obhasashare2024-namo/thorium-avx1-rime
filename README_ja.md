@@ -4,7 +4,7 @@
 
 # Thorium Browser（AVX1＋旧世代NVIDIA GPU/Fermi GF108対応版）- RIME IME統合＆ハードウェアアクセラレーション
 
-[![リリース](https://img.shields.io/badge/リリース-v151.0.7922.72-blue.svg)](packages/)
+[![リリース](https://img.shields.io/badge/リリース-v154.0.8023.0-blue.svg)](packages/)
 [![アーキテクチャ](https://img.shields.io/badge/アーキテクチャ-x86__64%20(AVX1)-green.svg)](SUPPORT_MATRIX.md)
 [![GPU](https://img.shields.io/badge/GPU-Intel%20HD4000%20%2B%20GF108%20Fermi-orange.svg)](SUPPORT_MATRIX.md)
 [![ライセンス](https://img.shields.io/badge/ライセンス-BSD--3--Clause-lightgrey.svg)](LICENSE)
@@ -34,12 +34,12 @@
 ### 1. Debian / Ubuntu / antiX Linux (.deb)
 ```bash
 sudo apt update && sudo apt install -y libnss3 libatk1.0-0 libcups2 libxcomposite1 libxdamage1 libxrandr2 libgbm1 libasound2
-sudo dpkg -i packages/thorium-browser_151.0.7922.72_AVX_RIME.deb || sudo apt-get -f install -y
+sudo dpkg -i packages/thorium-browser_154.0.8023.0_AVX.deb || sudo apt-get -f install -y
 ```
 
 ### 2. Arch Linux (.pkg.tar.zst)
 ```bash
-sudo pacman -U packages/thorium-browser-avx-rime-bin-151.0.7922.72-1-x86_64.pkg.tar.zst
+sudo pacman -U packages/thorium-browser-avx-rime-bin-154.0.8023.0-1-x86_64.pkg.tar.zst
 ```
 
 ### 3. GF108 デュアル GPU ワンクリック有効化

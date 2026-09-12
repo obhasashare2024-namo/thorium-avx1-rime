@@ -4,7 +4,7 @@
 
 # Thorium 瀏覽器（AVX1 + NVIDIA 舊顯卡/GF108 雙顯卡專用版）- 深度整合 RIME 輸入法與硬體解碼
 
-[![版本](https://img.shields.io/badge/版本-v151.0.7922.72-blue.svg)](packages/)
+[![版本](https://img.shields.io/badge/版本-v154.0.8023.0-blue.svg)](packages/)
 [![架構](https://img.shields.io/badge/架構-x86__64%20(AVX1)-green.svg)](SUPPORT_MATRIX.md)
 [![GPU](https://img.shields.io/badge/GPU-Intel%20HD4000%20%2B%20GF108%20Fermi-orange.svg)](SUPPORT_MATRIX.md)
 [![授權](https://img.shields.io/badge/授權-BSD--3--Clause-lightgrey.svg)](LICENSE)
@@ -34,12 +34,12 @@
 ### 1. Debian / antiX / Ubuntu 安裝（.deb）：
 ```bash
 sudo apt update && sudo apt install -y libnss3 libatk1.0-0 libcups2 libxcomposite1 libxdamage1 libxrandr2 libgbm1 libasound2
-sudo dpkg -i packages/thorium-browser_151.0.7922.72_AVX_RIME.deb || sudo apt-get -f install -y
+sudo dpkg -i packages/thorium-browser_154.0.8023.0_AVX.deb || sudo apt-get -f install -y
 ```
 
 ### 2. Arch Linux 安裝（.pkg.tar.zst）：
 ```bash
-sudo pacman -U packages/thorium-browser-avx-rime-bin-151.0.7922.72-1-x86_64.pkg.tar.zst
+sudo pacman -U packages/thorium-browser-avx-rime-bin-154.0.8023.0-1-x86_64.pkg.tar.zst
 ```
 
 ### 3. GF108 雙顯卡一鍵加速配置：

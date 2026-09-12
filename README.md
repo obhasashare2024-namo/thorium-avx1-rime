@@ -4,7 +4,7 @@
 
 # Thorium Browser (AVX1 + Legacy NVIDIA Fermi/GF108 Edition) with RIME IME & Dual-GPU Offloading
 
-[![Release](https://img.shields.io/badge/Release-v151.0.7922.72-blue.svg)](packages/)
+[![Release](https://img.shields.io/badge/Release-v154.0.8023.0-blue.svg)](packages/)
 [![Arch](https://img.shields.io/badge/Arch-x86__64%20(AVX1)-green.svg)](SUPPORT_MATRIX.md)
 [![GPU](https://img.shields.io/badge/GPU-Intel%20HD4000%20%2B%20GF108%20Fermi-orange.svg)](SUPPORT_MATRIX.md)
 [![License](https://img.shields.io/badge/License-BSD--3--Clause-lightgrey.svg)](LICENSE)
@@ -38,12 +38,12 @@ sudo apt update
 sudo apt install -y libnss3 libatk1.0-0 libcups2 libxcomposite1 libxdamage1 libxrandr2 libgbm1 libasound2
 
 # 2. Install precompiled package
-sudo dpkg -i packages/thorium-browser_151.0.7922.72_AVX_RIME.deb || sudo apt-get -f install -y
+sudo dpkg -i packages/thorium-browser_154.0.8023.0_AVX.deb || sudo apt-get -f install -y
 ```
 
 ### Arch Linux (.pkg.tar.zst)
 ```bash
-sudo pacman -U packages/thorium-browser-avx-rime-bin-151.0.7922.72-1-x86_64.pkg.tar.zst
+sudo pacman -U packages/thorium-browser-avx-rime-bin-154.0.8023.0-1-x86_64.pkg.tar.zst
 ```
 
 ### GF108 / NVIDIA 390 Hybrid GPU One-Click Activation
