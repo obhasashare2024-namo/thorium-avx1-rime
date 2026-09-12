@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/thorium-purple-lightning.png" width="220" alt="Thorium Browser Emblem">
+</p>
+
 # Thorium 瀏覽器（AVX1 + NVIDIA 舊顯卡/GF108 雙顯卡專用版）- 深度整合 RIME 輸入法與硬體解碼
 
 [![版本](https://img.shields.io/badge/版本-v151.0.7922.72-blue.svg)](packages/)

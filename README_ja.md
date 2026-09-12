@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/thorium-purple-lightning.png" width="220" alt="Thorium Browser Emblem">
+</p>
+
 # Thorium Browser（AVX1＋旧世代NVIDIA GPU/Fermi GF108対応版）- RIME IME統合＆ハードウェアアクセラレーション
 
 [![リリース](https://img.shields.io/badge/リリース-v151.0.7922.72-blue.svg)](packages/)

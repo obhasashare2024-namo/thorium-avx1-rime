@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/thorium-purple-lightning.png" width="220" alt="Thorium Browser Emblem">
+</p>
+
 # Thorium Browser (AVX1 + Legacy NVIDIA Fermi/GF108 Edition) with RIME IME & Dual-GPU Offloading
 
 [![Release](https://img.shields.io/badge/Release-v151.0.7922.72-blue.svg)](packages/)
