@@ -5,11 +5,38 @@
 # Thorium Browser (AVX1 + Legacy NVIDIA Fermi/GF108 Edition) with RIME IME & Dual-GPU Offloading
 
 [![Release](https://img.shields.io/badge/Release-v154.0.8023.0-blue.svg)](packages/)
+[![Hybrid Upstream](https://img.shields.io/badge/Hybrid%20Compilation-Official%20Chromium%20%2B%20Thorium%2015x-blueviolet.svg)](#-hybrid-compilation-architecture--pedigree)
 [![Arch](https://img.shields.io/badge/Arch-x86__64%20(AVX1)-green.svg)](SUPPORT_MATRIX.md)
 [![GPU](https://img.shields.io/badge/GPU-Intel%20HD4000%20%2B%20GF108%20Fermi-orange.svg)](SUPPORT_MATRIX.md)
 [![License](https://img.shields.io/badge/License-BSD--3--Clause-lightgrey.svg)](LICENSE)
 
-A high-performance Chromium/Thorium binary optimized for **2nd and 3rd Generation Intel Core processors (Sandy Bridge / Ivy Bridge)**, legacy AMD CPUs, and hybrid dual-GPU laptops (Intel HD Graphics 3000/4000 + NVIDIA Fermi GF108 / GT 635M / 390.xx drivers).
+[English](README.md) | [繁體中文](README_zh.md) | [日本語](README_ja.md) | [Hardware Support Matrix](SUPPORT_MATRIX.md) | [Handoff & Architecture](HANDOFF_M159.md) | [Installation Guide](INSTALL.md)
+
+---
+
+## 🧬 Hybrid Compilation Architecture & Pedigree
+
+> [!IMPORTANT]
+> **Hybrid Upstream Provenance**: This repository is a **dual-track hybrid compiled edition** forked from **Official Chromium upstream** and **Thorium latest 15x** (`Alex313031/Thorium` SIMD vectorization & feature patch suite), further reinforced with our self-developed Linux RIME / Fcitx5 7-Layer Immune Gate, toolchain segregation, and NVIDIA legacy dual-GPU offloading.
+
+```mermaid
+graph TD
+    A["Official Chromium Upstream Trunk"] --> D["Hybrid Build Tree (AVX1)"]
+    B["Thorium Latest 15x Patch Suite (AVX1 SIMD / ThinLTO / Codecs / Branding)"] --> D
+    C["Proprietary C++ & Kernel Hardening (RIME Immune Gate, GF108 Offloading, Toolchain Segregation)"] --> D
+    D --> E["GN Vector Configuration (args_avx.gn)"]
+    E --> F["Clang + ThinLTO + 128/256-bit AVX1 Compilation Engine"]
+    F --> G["Native Physical Binary & Packages (.deb / .pkg.tar.zst)"]
+```
+
+| Component | Source / Upstream | Key Contribution & Technical Implementation |
+| :--- | :--- | :--- |
+| **Base Browser Engine** | **Official Chromium Upstream** | Stable Chromium rendering engine, V8 JavaScript engine, and web standards foundation. |
+| **Vector & Multimedia Suite** | **Thorium Latest 15x** (`Alex313031/Thorium`) | AVX1 vectorization flags (`-march=sandybridge`), Clang ThinLTO, proprietary audio/video codecs, official Thorium API keys, and Purple branding. |
+| **Toolchain Segregation** | **Proprietary Patch 0001** | Isolates host compilation tools (`protoc`, `torque`, `cppgen`) from target AVX flags (`clang_x64_target`), preventing generator crashes during compilation on non-AVX hosts. |
+| **RIME IME Integration** | **Proprietary Patch** | Full native inline candidate positioning for Fcitx5 and IBus with occlusion keepalive flags (`--disable-features=CalculateNativeWinOcclusion`), preventing IME focus loss. |
+| **NVIDIA 390.157 + Linux 6.6 Dual-GPU** | **Proprietary Kernel/Userspace Fix** | Modern `pci_alloc_irq_vectors` eliminates `request_irq (-22)` interrupt collisions; `fix_drm.so` intercepts secondary DRM Master locks for 2GB VRAM OpenGL 4.6 offloading. |
+| **VA-API Hardware Video Decoding** | **Proprietary Config** | Enables Intel HD 4000/3000 iGPU hardware video decoding for fluid 1080p60 playback. |
 
 ---
 
