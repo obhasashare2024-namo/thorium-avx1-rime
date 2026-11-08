@@ -2,27 +2,27 @@
   <img src="assets/thorium-purple-lightning.png" width="220" alt="Thorium Browser Emblem">
 </p>
 
-# Thorium Browser（AVX1＋旧世代NVIDIA GPU/Fermi GF108対応版）- RIME IME統合＆ハードウェアアクセラレーション
+# Thorium Browser（公式 Chromium ＋ Thorium ハイブリッド AVX1＆RIME IME 版）
 
-[![リリース](https://img.shields.io/badge/リリース-v154.0.8023.0-blue.svg)](packages/)
-[![ハイブリッドビルド](https://img.shields.io/badge/ハイブリッドビルド-公式%20Chromium%20%2B%20Thorium%2015x-blueviolet.svg)](#-ハイブリッドコンパイルアーキテクチャと系譜-hybrid-compilation-architecture)
+[![リリース](https://img.shields.io/badge/リリース-最新版-blue.svg)](packages/)
+[![ハイブリッドビルド](https://img.shields.io/badge/ハイブリッドビルド-公式%20Chromium%20%2B%20Thorium-blueviolet.svg)](#-ハイブリッドコンパイルアーキテクチャと系譜-hybrid-compilation-architecture)
 [![アーキテクチャ](https://img.shields.io/badge/アーキテクチャ-x86__64%20(AVX1)-green.svg)](SUPPORT_MATRIX.md)
 [![GPU](https://img.shields.io/badge/GPU-Intel%20HD4000%20%2B%20GF108%20Fermi-orange.svg)](SUPPORT_MATRIX.md)
 [![ライセンス](https://img.shields.io/badge/ライセンス-BSD--3--Clause-lightgrey.svg)](LICENSE)
 
-[English](README.md) | [繁體中文](README_zh.md) | [日本語](README_ja.md) | [Hardware Support Matrix](SUPPORT_MATRIX.md) | [技術引き継ぎ書](HANDOFF_M159.md) | [インストール ガイド](INSTALL.md)
+[English](README.md) | [繁體中文](README_zh.md) | [日本語](README_ja.md) | [Hardware Support Matrix](SUPPORT_MATRIX.md) | [技術設計書](HANDOFF_M159.md) | [インストール ガイド](INSTALL.md)
 
 ---
 
 ## 🧬 ハイブリッドコンパイルアーキテクチャと系譜 (Hybrid Compilation Architecture)
 
 > [!IMPORTANT]
-> **ハイブリッドソースコードの系譜**：本プロジェクトは、**公式 Chromium 上流ソースツリー** と **Thorium 最新 15x**（`Alex313031/Thorium` の SIMD 最適化および機能パッチ群）を融合し、さらに独自開発のビルドホスト分離ツールチェーン、Linux RIME / Fcitx5 IME 入力保持機構、および NVIDIA 390 デュアル GPU 加速ドライバパッチを統合した**デュアルトラック ハイブリッドビルド版**です。
+> **ハイブリッドソースコードの系譜**：本プロジェクトは、**公式 Chromium 最新版**（最新 Upstream ソースツリー）と **Thorium 最新版**（`Alex313031/Thorium` の SIMD 最適化および機能パッチ群）を融合し、さらに独自開発のビルドホスト分離ツールチェーン、Linux RIME / Fcitx5 IME 入力保持機構、および NVIDIA 390 デュアル GPU 加速ドライバパッチを統合した**デュアルトラック ハイブリッドビルド版**です。
 
 ```mermaid
 graph TD
-    A["公式 Chromium 上流ソースツリー"] --> D["ハイブリッド ソースツリー (AVX1)"]
-    B["Thorium 最新 15x パッチ群 (AVX1 SIMD / ThinLTO / Codecs / 紫テーマ)"] --> D
+    A["公式 Chromium 上流ソースツリー (最新版)"] --> D["ハイブリッド ソースツリー (AVX1)"]
+    B["Thorium 最新パッチ群 (AVX1 SIMD / ThinLTO / Codecs / 紫テーマ)"] --> D
     C["独自 C++ & カーネルパッチ (RIME 保持 / ホストツールチェーン分離 / GF108 加速)"] --> D
     D --> E["GN ベクトル構成 (args_avx.gn)"]
     E --> F["Clang + ThinLTO + 128/256ビット AVX1 コンパイルエンジン"]
@@ -31,12 +31,18 @@ graph TD
 
 | 構成要素 | ソース / 上流 | 主な貢献と技術的実装詳細 |
 | :--- | :--- | :--- |
-| **ベース ブラウザ エンジン** | **公式 Chromium 上流** | 安定した Chromium レンダリングエンジン、V8 JavaScript エンジン、最新 Web 標準基盤。 |
-| **ベクトル & マルチメディア群** | **Thorium 最新 15x** (`Alex313031/Thorium`) | AVX1 最適化フラグ（`-march=sandybridge`）、ThinLTO、全メディアコーデック、公式 API キー、紫太極ブランドアセット。 |
+| **ベース ブラウザ エンジン** | **公式 Chromium コア (最新版)** | 安定した Chromium レンダリングエンジン、V8 JavaScript エンジン、最新 Web 標準基盤。 |
+| **ベクトル & マルチメディア群** | **Thorium 最新版** (`Alex313031/Thorium`) | AVX1 最適化フラグ（`-march=sandybridge`）、ThinLTO、全メディアコーデック、公式 API キー、紫太極ブランドアセット。 |
 | **ホスト分離ツールチェーン** | **独自パッチ Patch 0001** | ホスト用生成ツールとターゲット用 AVX フラグ（`clang_x64_target`）を分離し、非 AVX ビルド機でのクラッシュを防止。 |
 | **RIME IME 入力保持機構** | **独自パッチ** | Linux Fcitx5 / IBus 候補枠インライン追従に対応し、遮蔽追跡保持フラグ（`--disable-features=CalculateNativeWinOcclusion`）によりスリープ後の入力不能を防止。 |
 | **NVIDIA 390 デュアル GPU 対応** | **独自カーネル/ユーザ空間パッチ** | `nv.c` を更新して `pci_alloc_irq_vectors` を適用し IRQ 競合を解消。`fix_drm.so` で DRM Master 競合を回避し、GF108 の 2GB VRAM と OpenGL 4.6 を解放。 |
 | **VA-API ハードウェア動画デコード** | **専用構成** | Intel HD 4000/3000 内蔵グラフィックスでの 1080p60 再生に対応し、CPU 負荷を大幅に低減。 |
+
+---
+
+## 概要
+
+**Thorium Browser（AVX1 互換版）** は、**AVX1 命令セット**（Sandy Bridge / Ivy Bridge）およびレガシーハードウェア向けに最適化された超高速 Chromium フォークです。公式 Chromium コアと Thorium のマルチメディアマイクロカーネル、AVX1 SIMD ルーチン、およびハードウェアアクセラレーションを緊密に統合しています。
 
 ---
 
@@ -61,12 +67,12 @@ graph TD
 ### 1. Debian / Ubuntu / antiX Linux (.deb)
 ```bash
 sudo apt update && sudo apt install -y libnss3 libatk1.0-0 libcups2 libxcomposite1 libxdamage1 libxrandr2 libgbm1 libasound2
-sudo dpkg -i packages/thorium-browser_154.0.8023.0_AVX.deb || sudo apt-get -f install -y
+sudo dpkg -i packages/thorium-browser_*_AVX.deb || sudo apt-get -f install -y
 ```
 
 ### 2. Arch Linux (.pkg.tar.zst)
 ```bash
-sudo pacman -U packages/thorium-browser-avx-rime-bin-154.0.8023.0-1-x86_64.pkg.tar.zst
+sudo pacman -U packages/thorium-browser-avx-rime-bin-*-x86_64.pkg.tar.zst
 ```
 
 ### 3. GF108 デュアル GPU ワンクリック有効化
